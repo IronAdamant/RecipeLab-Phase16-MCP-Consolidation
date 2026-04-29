@@ -1,6 +1,7 @@
 'use strict';
 
 const Recipe = require('../models/Recipe');
+const { clampFactor, scaleQuantity, effectiveYield } = require('../utils/ingredientYieldComputer');
 
 /**
  * Recipe scaling service
@@ -23,9 +24,9 @@ class RecipeScalingService {
     let factor;
 
     if (targetServings !== undefined && recipe.servings) {
-      factor = targetServings / recipe.servings;
+      factor = effectiveYield(recipe.servings, targetServings);
     } else if (scaleFactor !== undefined) {
-      factor = scaleFactor;
+      factor = clampFactor(scaleFactor);
     } else {
       factor = 1;
     }
@@ -33,7 +34,7 @@ class RecipeScalingService {
     // Scale ingredient quantities
     const scaledIngredients = (recipe.ingredients || []).map(ing => ({
       ...ing,
-      quantity: ing.quantity ? ing.quantity * factor : null,
+      quantity: ing.quantity ? scaleQuantity(ing.quantity, factor) : null,
       original_quantity: ing.quantity
     }));
 
