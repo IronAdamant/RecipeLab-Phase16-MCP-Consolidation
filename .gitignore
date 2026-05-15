@@ -1,0 +1,65 @@
+# Dependencies
+node_modules/
+
+# MCP tool databases and caches (Chisel, Stele, CoordinationHub, etc.)
+.chisel/
+.stele-context/
+.coordinationhub/
+.cache/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+trammel.db
+
+# Large generated indices
+*.zlib
+*.lock
+
+# Test / generated data (often volatile)
+data/*.json
+data/test/
+data/test_app/
+data/test_db/
+data/collection_recipes.json
+data/collections.json
+data/cooking_logs.json
+data/dietary_profiles.json
+data/ingredient_prices.json
+data/ingredients.json
+data/meal_plan_entries.json
+data/meal_plans.json
+data/recipe_tags.json
+data/recipes.json
+data/shopping_list_items.json
+data/shopping_lists.json
+data/tags.json
+
+# Logs and temp
+*.log
+*.tmp
+npm-debug.log*
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+
+# Build / dist (if ever added)
+dist/
+build/
+
+# Environment
+.env
+.env.local
+
+# Coverage / reports (optional - some are committed)
+coverage/
+
+# Phase-specific large artifacts (keep the _open.md reports, ignore old phases if desired)
+MCP_Findings/Phase_*/
+MCP_Findings/Review_*/
+MCP_Findings/OLD/

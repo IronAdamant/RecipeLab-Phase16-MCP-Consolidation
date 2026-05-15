@@ -37,10 +37,9 @@ Detailed findings per phase in `MCP_Findings/Phase 1 - 2/` through `MCP_Findings
 - [x] `coupling` (semantic) provides bidirectional relationships with shared symbols — Phase 4 standout
 
 **NOT FIXED — needs MCP server code changes:**
-- [ ] `search` (semantic) returns irrelevant results for specific domain queries. Phase 6: "allergen dietary compliance" returned units.test.js as #1. **Fix needed: BM25/keyword fallback when semantic similarity is low; domain-aware re-ranking.**
+- [ ] `search` (semantic) is **deprecated as standalone search**. Semantic search is meant to work **alongside Grep**, not replace it. Use Grep for primary retrieval, then use semantic search to refine/rerank those results. **Fix needed: Document this clearly; standalone use produces irrelevant results.**
 - [ ] `impact_radius` output is too large to use (193K chars for Recipe.js). **Fix needed: summary mode with file counts per depth level, path filtering.**
 - [ ] `detect_changes` cannot discover new unindexed files. **Fix needed: optional filesystem scan mode.**
-- [ ] `search` should boost recently-indexed content or allow timestamp filtering.
 
 **Breakthrough moment:** Phase 4 — default import classification fixed; find_references became fully functional for CommonJS patterns.
 
@@ -81,9 +80,9 @@ Detailed findings per phase in `MCP_Findings/Phase 1 - 2/` through `MCP_Findings
 
 ## Tech Stack
 - **Runtime**: Node.js (or Bun)
-- **Database**: SQLite via better-sqlite3 (Phase 7: migrated from FileStore JSON)
-- **API**: Express (24 routes)
-- **Tests**: Jest + Babel (same as ConsistencyHub for apples-to-apples MCP comparison)
+- **Database**: FileStore JSON (zero-dependency, reverted from SQLite)
+- **API**: Express-style router (24 routes)
+- **Tests**: Custom assert-based runner (zero-dependency)
 - **CLI**: Commander.js
 
 ## Architecture (Design for MCP Signal)
@@ -98,7 +97,7 @@ src/
   exporters/       — JSON, CSV, Markdown, Paprika (4, NO tests — deliberate gap)
   plugins/         — Plugin system with 18 hooks + Phase 7: DynamicRegistry, DynamicPluginManager
   data/            — Nutrition, density, allergen, seasonal, prices (5)
-  db/              — Phase 7: SQLite wrapper (sqlite.js), migration system (migrations.js), schema (schema.js)
+  db/              — FileStore wrapper (index.js), schema (schema.js), legacy migrations.js
   cli/             — Commander.js CLI
   utils/           — Validation, units, conversion, conversionEngine + Phase 7: CircularDependencyDetector, OpenApiGenerator
 public/            — Web UI: 8 pages + CSS + JS
@@ -110,7 +109,6 @@ tests/             — 564 tests + Phase 7 additions
 - `src/exporters/*` — 4 files, zero tests
 - `src/services/collectionService.js` — no tests (Phase 6)
 - `src/services/costEstimationService.js` — no tests (Phase 6)
-- `src/cli/index.js` — no tests (highest risk_map score at 0.49)
 
 ## Completed Phases
 
@@ -120,13 +118,15 @@ tests/             — 564 tests + Phase 7 additions
 4. **Phase 4** (2026-03-24): Plugin system, recipe scaling, conversion engine — 470 tests, **MCP breakthrough** (require() parser fixed)
 5. **Phase 5** (2026-03-25): Web UI (8 pages) — 496 tests
 6. **Phase 6** (2026-03-25): Collections, dietary compliance, recommendations — 564 tests
-7. **Phase 7** (2026-03-26): SQLite database migration, dynamic plugin system, coupling/similarity/workflow services — **Trammel fully validated** (end-to-end decompose → plan → execute → complete)
+7. **Phase 7** (2026-03-26): Dynamic plugin system, coupling/similarity/workflow services — **Trammel fully validated** (end-to-end decompose → plan → execute → complete)
+
+8. **Phase 8** (2026-03-27): MCP challenge features (SemanticQueryEngine, ImportGraphCoverageAnalyzer, RequirementsToScaffoldParser, DynamicPluginHotSwap, MultiAgentCodeReview) + CLI tests — **MCP gaps exposed**
 
 ## Planned Phases (MCP Server Fixes)
 
-8. **Phase 8**: Fix Stele search (BM25 fallback), impact_radius summary mode
-9. **Phase 9**: Fix Trammel scaffold inference, structural recipe matching
-10. **Phase 10**: Fix Chisel coupling (import-graph analysis), working-tree awareness
+9. **Phase 9**: Fix Stele search (BM25 fallback), impact_radius summary mode
+10. **Phase 10**: Fix Trammel scaffold inference, structural recipe matching
+11. **Phase 11**: Fix Chisel coupling (import-graph analysis), working-tree awareness
 
 ## Environment
 - **Installed tools:** Node.js, npm, Bun, Python

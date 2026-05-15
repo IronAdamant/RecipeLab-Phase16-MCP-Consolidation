@@ -8,7 +8,7 @@
  * 3. Symbol references cross plugin boundaries dynamically
  */
 
-const PluginManager = require('./PluginManager');
+const { PluginManager } = require('./PluginManager');
 const dynamicRegistry = require('./DynamicRegistry');
 
 class DynamicPluginManager extends PluginManager {
