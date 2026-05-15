@@ -122,6 +122,15 @@ tests/             — 564 tests + Phase 7 additions
 
 8. **Phase 8** (2026-03-27): MCP challenge features (SemanticQueryEngine, ImportGraphCoverageAnalyzer, RequirementsToScaffoldParser, DynamicPluginHotSwap, MultiAgentCodeReview) + CLI tests — **MCP gaps exposed**
 
+## Phase 16 (2026-05) — MCP-Guided Massive Refactoring Campaign (Batches A-E) — **FINAL MILESTONE**
+
+Dedicated repo: https://github.com/IronAdamant/RecipeLab-Phase16-MCP-Consolidation
+
+- Batch D (RouteLoader split + PluginSystemFacade) completed with full check & cleanup.
+- All 5 MCPs heavily challenged via live `search_tool` + `use_tool` calls throughout the refactoring.
+- Final PR created on the dedicated repo from `batch-d-routeLoader-facade-complete` → `master`.
+- Living checkbox reports (`*_open.md`) updated with exhaustive tool usage evidence.
+
 ## Planned Phases (MCP Server Fixes)
 
 9. **Phase 9**: Fix Stele search (BM25 fallback), impact_radius summary mode
